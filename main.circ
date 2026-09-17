@@ -1,0 +1,32 @@
+// main - somador de 3 bits com registrador e display de 7 segmentos
+// (adaptado do circuitosomador.circ do Logisim)
+import somador3bits "somador3bits.circ"
+import registrado3bit "registrado3bit.circ"
+import driver7seg "driver7seg.circ"
+
+input[3] a, b      // a[0]/b[0] = LSB
+input clk          // clock do registrador
+
+// No Logisim o Cin do somador vinha de uma Constante 0.
+// circ não tem constante, então: x AND (NOT x) == 0
+not zero_n(in = clk)
+and zero(a = clk, b = zero_n.out)
+
+somador3bits add(a = a, b = b, cin = zero.out)
+registrado3bit regs(d = add.s, clock = clk)
+driver7seg display(n = regs.q)
+
+// valor registrado em decimal (led de 3 bits mostra o número)
+led[3] valor(in = regs.q)
+
+// display de 7 segmentos (um led por segmento)
+led seg_a(in = display.a)
+led seg_b(in = display.b)
+led seg_c(in = display.c)
+led seg_d(in = display.d)
+led seg_e(in = display.e)
+led seg_f(in = display.f)
+led seg_g(in = display.g)
+
+output[3] soma(in = add.s)
+output[3] registrado(in = regs.q)

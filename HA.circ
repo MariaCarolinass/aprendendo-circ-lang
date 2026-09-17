@@ -1,0 +1,7 @@
+// HA - Half Adder (meio somador)
+// S = A xor B,  C = A and B
+input a, b
+xor s_g(a = a, b = b)
+and c_g(a = a, b = b)
+output s(in = s_g.out)
+output c(in = c_g.out)

@@ -1,0 +1,9 @@
+// registrado3bit - três registradores de 1 bit com clock compartilhado
+// d[0] -> q[0] (LSB) ... d[2] -> q[2] (MSB)
+import registrador "registrador.circ"
+input[3] d
+input clock
+registrador r0(dado = d[0], clock = clock)
+registrador r1(dado = d[1], clock = clock)
+registrador r2(dado = d[2], clock = clock)
+output[3] q(in = {r0.s, r1.s, r2.s})

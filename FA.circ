@@ -1,0 +1,9 @@
+// FA - Full Adder (somador completo)
+// dois half adders + OR para o carry de saída
+import HA "HA.circ"
+input a, b, cin
+HA ha1(a = a, b = b)
+HA ha2(a = ha1.s, b = cin)
+or cout_g(a = ha1.c, b = ha2.c)
+output s(in = ha2.s)
+output cout(in = cout_g.out)

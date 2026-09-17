@@ -1,0 +1,57 @@
+// driver7seg - decodificador 3 bits -> 7 segmentos (dígitos 0 a 7)
+// n[0]=A (LSB), n[1]=B, n[2]=C (MSB); segmentos ativos em nível alto
+input[3] n
+wire A(in = n[0])
+wire B(in = n[1])
+wire C(in = n[2])
+not nA(in = A.out)
+not nB(in = B.out)
+not nC(in = C.out)
+xor xab(a = A.out, b = B.out)
+xor xbc(a = B.out, b = C.out)
+
+// produtos compartilhados entre segmentos
+and p1(a = nA.out, b = nC.out)      // p1 = A'C'
+and p2(a = nA.out, b = B.out)       // p2 = A'B
+and p3(a = nA.out, b = nB.out)      // p3 = A'B'
+and p4(a = nB.out, b = C.out)       // p4 = B'C
+and p5(a = B.out, b = nC.out)       // p5 = BC'
+and p6(a = p2.out, b = C.out)       // p6 = A'BC
+and p7(a = A.out, b = xbc.out)      // p7 = A(B xor C)
+and p8(a = B.out, b = C.out)        // p8 = BC
+and p10(a = p3.out, b = C.out)      // p10 = A'B'C
+and p11(a = A.out, b = p8.out)      // p11 = ABC
+
+// a = A'C' + BC + A(B xor C)
+or a_g1(a = p1.out, b = p8.out)
+or a_g2(a = a_g1.out, b = p7.out)
+output a(in = a_g2.out)
+
+// b = C' + A'B'C + ABC
+or b_g1(a = p10.out, b = p11.out)
+or b_g2(a = nC.out, b = b_g1.out)
+output b(in = b_g2.out)
+
+// c = A + B' + C
+or c_g1(a = nB.out, b = C.out)
+or c_g2(a = A.out, b = c_g1.out)
+output c(in = c_g2.out)
+
+// d = A'C' + A(B xor C) + A'BC
+or d_g1(a = p1.out, b = p7.out)
+or d_g2(a = d_g1.out, b = p6.out)
+output d(in = d_g2.out)
+
+// e = A'B + A'C'
+or e_g1(a = p2.out, b = p1.out)
+output e(in = e_g1.out)
+
+// f = A'B' + B'C + A'BC
+or f_g1(a = p3.out, b = p4.out)
+or f_g2(a = f_g1.out, b = p6.out)
+output f(in = f_g2.out)
+
+// g = BC' + B'C + A'BC
+or g_g1(a = p5.out, b = p4.out)
+or g_g2(a = g_g1.out, b = p6.out)
+output g(in = g_g2.out)
