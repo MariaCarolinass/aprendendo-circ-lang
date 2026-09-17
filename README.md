@@ -1,4 +1,4 @@
-# aprendendo-circ-lang
+# circ-lang: a linguagem para circuitos lógicos
 
 Repositório de estudos sobre a [circ](https://circ-lang.org/), uma linguagem textual para descrever e simular circuitos lógicos digitais. A ideia aqui é aprender a linguagem na prática, construindo circuitos combinacionais e sequenciais do zero, além de contribuir com o projeto open source por trás dela.
 
